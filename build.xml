@@ -12,8 +12,8 @@
 	
 	<property name="JUNIT_HOME" value="C:/Program Files (x86)/Jenkins/workspace"/>
 	<path id="JUnit 4.libraryclasspath">
-		<pathelement location="${JUNIT_HOME}/junit.jar-4.12"/>
-		<pathelement location="${JUNIT_HOME}/hamcrest-core-1.3.jar"/>
+		<pathelement location="${JUNIT_HOME}/junit.jar.jar"/>
+		<pathelement location="${JUNIT_HOME}/hamcrest-core.jar.jar"/>
 	</path>
 	<path id="Fibonacci.classpath">
 		<pathelement location="bin"/>
