@@ -1,96 +1,88 @@
-<?xml version="1.0"?>
-<project name="Fibonacci" default="jar"
-         xmlns:ivy="antlib:org.apache.ivy.ant">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Fibonacci">
+    <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+	
+	<property name="JUNIT_HOME" value="C:\Program Files (x86)\Jenkins\workspace"/>
+	<path id="JUnit 4.libraryclasspath">
+		<pathelement location="${JUNIT_HOME}/junit.jar"/>
+		<pathelement location="${JUNIT_HOME}/hamcrest-core.jar"/>
+	</path>
+	<path id="projectname.classpath">
+		<pathelement location="bin"/>
+	<path refid="JUnit 4.libraryclasspath"/>
+	</path>
 
-  <!-- Project-specific configuration -->
-  <property name="main.class" value="${package.main}.${ant.project.name}"/>
-  <property name="base.name" value="${artifactId}-${version}"/>
-
-  <!-- Standard Directory Layout -->
-  <property name="src.dir" value="src"/>
-  <property name="test.dir" value="test"/>
-  <property name="build.dir" value="build"/>
-  <property name="dist.dir" value="dist"/>
-  <property name="JUNIT_HOME" value="C:/Program Files (x86)/Jenkins/workspace"/>
-  <path id="JUnit 4.libraryclasspath">
-	<pathelement location="${JUNIT_HOME}/junit.jar"/>
-	<pathelement location="${JUNIT_HOME}/hamcrest-core.jar"/>
-  </path>
-  <path id="projectname.classpath">
-	<pathelement location="bin"/>
-  <path refid="JUnit 4.libraryclasspath"/>
-  </path>
-  <!-- Targets -->
-
-  <target name="resolve" description="Retrieve dependencies with Ivy.">
-    <ivy:resolve log="download-only"/>
-    <ivy:cachepath conf="build" pathid="build.classpath"/>
-    <ivy:cachepath conf="default" pathid="runtime.classpath"/>
-    <ivy:cachefileset conf="default" setid="runtime.fileset"/>
-    <ivy:cachepath conf="test" pathid="test.classpath"/>
-    <ivy:cachepath conf="analysis" pathid="analysis.classpath"/>
-  </target>
-
-  <target name="compile" depends="resolve" description="Compile all sources.">
-    <mkdir dir="${dist.dir}"/>
-    <mkdir dir="${build.dir}/classes"/>
-    <javac srcdir="${src.dir}" destdir="${build.dir}/classes"
-           optimize="on" debug="on" deprecation="on" includeantruntime="no">
-      <compilerarg value="-Xlint"/>
-      <classpath refid="build.classpath"/>
-    </javac>
-    <copy todir="${build.dir}/classes">
-      <fileset dir="${src.dir}" excludes="**/*.java"/>
-    </copy>
-  </target>
-
-  <target name="jar" depends="compile"
-          description="Generate the jarfile distributable.">
-    <jar destfile="${dist.dir}/${base.name}.jar"
-         basedir="${build.dir}/classes">
-      <manifest>
-        <attribute name="Main-Class" value="${main.class}"/>
-      </manifest>
-    </jar>
-    <jar destfile="${dist.dir}/${base.name}-all.jar"
-         basedir="${build.dir}/classes">
-      <zipgroupfileset refid="runtime.fileset"/>
-      <manifest>
-        <attribute name="Main-Class" value="${main.class}"/>
-      </manifest>
-    </jar>
-  </target>
-
-  <target name="run" depends="compile" description="Run the application.">
-    <java classname="${main.class}" classpath="${build.dir}/classes" fork="yes">
-      <classpath refid="runtime.classpath"/>
-      <arg value="--name"/>
-      <arg value="Java"/>
-    </java>
-  </target>
-
-  <target name="clean" description="Delete all generated files.">
-    <delete dir="${build.dir}"/>
-    <delete dir="${dist.dir}"/>
-    <delete file="cache.properties"/>
-  </target>
-
-  <target name="check" depends="resolve" description="Run Checkstyle.">
-    <taskdef resource="checkstyletask.properties"
-             classpathref="analysis.classpath"/>
-    <checkstyle config="checkstyle.xml">
-      <fileset dir="${src.dir}" includes="**/*.java"/>
-      <classpath path="${build.dir}/classes"/>
-    </checkstyle>
-  </target>
-
-  <target name="findbugs" depends="compile" description="Run FindBugs.">
-    <taskdef classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
-             name="findbugs" classpathref="analysis.classpath"/>
-    <findbugs output="emacs" classpathref="analysis.classpath" pluginList="">
-      <auxclasspath refid="analysis.classpath"/>
-      <sourcepath path="${src.dir}"/>
-      <class location="${build.dir}/classes"/>
-    </findbugs>
-  </target>
+	<!--in your javac task include the classpath -->
+	<javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+		<src path="src"/>
+		<classpath refid="projectname.classpath"/>
+	</javac>	
+    <path id="JUnit 4.libraryclasspath">
+        <pathelement location="../../Users/Sarah/.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
+        <pathelement location="../../Users/Sarah/.p2/pool/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+    </path>
+    <path id="Fibonacci.classpath">
+        <pathelement location="bin"/>
+        <path refid="JUnit 4.libraryclasspath"/>
+    </path>	
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+                <exclude name="test/"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/test">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <src path="src/test"/>
+            <exclude name="test/"/>
+            <classpath refid="Fibonacci.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target name="FibonacciUI">
+        <java classname="FibonacciUI" failonerror="true" fork="yes">
+            <classpath refid="Fibonacci.classpath"/>
+        </java>
+    </target>
+    <target name="TestFibonacci">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="TestFibonacci" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="Fibonacci.classpath"/>
+        </junit>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
 </project>
