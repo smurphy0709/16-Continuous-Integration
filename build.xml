@@ -10,10 +10,10 @@
     <property name="target" value="1.8"/>
     <property name="source" value="1.8"/>
 	
-	<property name="JUNIT_HOME" value="C:/Program Files (x86)/Jenkins/workspace"/>
+	<property name="JUNIT_HOME" value="C:/Program Files (x86)/Jenkins/workspace/Fibonacci/"/>
 	<path id="JUnit 4.libraryclasspath">
-		<pathelement location="junit.jar"/>
-		<pathelement location="hamcrest-core.jar"/>
+		<pathelement location="${JUNIT_HOME}/junit.jar"/>
+		<pathelement location="${JUNIT_HOME}/hamcrest-core.jar"/>
 	</path>
 	<path id="Fibonacci.classpath">
 		<pathelement location="bin"/>
